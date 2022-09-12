@@ -28,4 +28,4 @@ python3 snow_visualize.py -d root/snowyKITTI/dataset/ -dc root/networks/train/ta
 (-s = sequence)
 ```
 
-Thanks to SalsaNext for providing some of the code! https://github.com/TiagoCortinhal/SalsaNext
+Thanks to [SalsaNext](https://github.com/TiagoCortinhal/SalsaNext) for providing some of the code! 
