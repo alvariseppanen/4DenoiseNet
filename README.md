@@ -1,6 +1,6 @@
 ## The official implementation of 4DenoiseNet
 
-![](https://github.com/alvariseppanen/4DenoiseNet/animation1.gif)
+![](https://github.com/alvariseppanen/4DenoiseNet/blob/main/animation1.gif)
 
 ### Train:
 ```
