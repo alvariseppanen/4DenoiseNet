@@ -28,6 +28,7 @@ python3 snow_evaluate_iou.py -d root/snowyKITTI/dataset/ -dc root/networks/train
 
 ### Visualize:
 ```
+cd utils
 python3 snow_visualize.py -d root/snowyKITTI/dataset/ -dc root/networks/train/tasks/semantic/config/labels/snowy-kitti.yaml -p /your/predictions/folder/ -s 11
 (-s = sequence)
 ```
