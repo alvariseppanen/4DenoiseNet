@@ -1,4 +1,4 @@
-## The official implementation of 4DenoiseNet
+## 4DenoiseNet: Adverse Weather Denoising from Adjacent Point Clouds
 
 ![](https://github.com/alvariseppanen/4DenoiseNet/blob/main/animation1.gif)
 
