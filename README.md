@@ -2,6 +2,10 @@
 
 ![](https://github.com/alvariseppanen/4DenoiseNet/blob/main/animation1.gif)
 
+### Download SnowyKITTI-dataset:
+
+coming soon
+
 ### Train:
 ```
 cd networks
