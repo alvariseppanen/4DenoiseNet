@@ -13,7 +13,7 @@ import torch.optim as optim
 from matplotlib import pyplot as plt
 from torch.autograd import Variable
 from common.avgmeter import *
-#from common.logger import Logger
+from common.logger import Logger
 from common.sync_batchnorm.batchnorm import convert_model
 from common.warmupLR import *
 from tasks.semantic.modules.ioueval import *
@@ -121,7 +121,7 @@ class Trainer():
         with torch.no_grad():
             self.model = NN(self.parser.get_n_classes(), self.ARCH)
 
-        #self.tb_logger = Logger(self.log + "/tb") # no tensorflow, no logger
+        self.tb_logger = Logger(self.log + "/tb") # no tensorflow, no logger
 
         # GPU?
         self.gpu = False
@@ -326,14 +326,14 @@ class Trainer():
             print("*" * 80)
 
             # save to log 
-            '''Trainer.save_to_log(logdir=self.log,
+            Trainer.save_to_log(logdir=self.log,
                                 logger=self.tb_logger,
                                 info=self.info,
                                 epoch=epoch,
                                 w_summary=self.ARCH["train"]["save_summary"],
                                 model=self.model_single,
                                 img_summary=self.ARCH["train"]["save_scans"],
-                                imgs=rand_img)'''
+                                imgs=rand_img)
 
         print('Finished Training')
 
