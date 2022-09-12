@@ -2,8 +2,10 @@
 
 
 ## Train:
+'''
 cd networks
 ./train.sh -d root_to_snowyKITTI/snowyKITTI/dataset/ -a fourdenoisenet.yml -l /your/log/folder/ -c 0
+'''
 
 ## Infer with pretrained model:
 cd networks/train/tasks/semantic
