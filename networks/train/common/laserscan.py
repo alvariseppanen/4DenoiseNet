@@ -89,18 +89,7 @@ class LaserScan:
 
         # put in attribute
         points = scan[:, 0:3]  # get xyz
-        """
-        Transform points to current frame for dynamic object segmentation
-        """
-        #hom_points = np.ones(scan.shape)
-        #hom_points[:, :-1] = points
-        #print(if_transform)
-        #if if_transform:
-        #    points_transformed = np.linalg.inv(to_pose).dot(from_pose).dot(hom_points.T).T
-        #else:
-        #    points_transformed = hom_points
-        """"""
-        #points = points_transformed[:, :3]
+        
         remissions = scan[:, 3]  # get remission
         if self.drop_points is not False:
             self.points_to_drop = np.random.randint(0, len(points)-1,int(len(points)*self.drop_points))

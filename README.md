@@ -1,6 +1,6 @@
-## 4DenoiseNet: Adverse Weather Denoising from Adjacent Point Clouds
+## 4DenoiseNet: Adverse Weather Denoising from Adjacent Point Clouds, [arXiv](https://arxiv.org/abs/2209.07121)
 
-![](https://github.com/alvariseppanen/4DenoiseNet/blob/main/animation1.gif)
+![](https://github.com/alvariseppanen/4DenoiseNet/blob/main/demo.gif)
 
 ### Download SnowyKITTI-dataset:
 
@@ -15,21 +15,21 @@ cd networks
 ### Infer (pretrained model -m root/logs/2022-9-01-10:40/):
 ```
 cd networks/train/tasks/semantic
-python3 infer.py -d root/snowyKITTI/dataset/ -m root/logs/2022-9-01-10:40/ -l /your/predictions/folder/ -s test
+python3 infer.py -d root/toy_snowyKITTI/dataset/ -m root/logs/2022-9-01-10:40/ -l /your/predictions/folder/ -s test
 (-s = split)
 ```
 
 ### Evaluate:
 ```
 cd networks/train/tasks/semantic
-python3 snow_evaluate_iou.py -d root/snowyKITTI/dataset/ -dc root/networks/train/tasks/semantic/config/labels/snowy-kitti.yaml -p /your/predictions/folder/ -s test
+python3 snow_evaluate_iou.py -d root/toy_snowyKITTI/dataset/ -dc root/networks/train/tasks/semantic/config/labels/snowy-kitti.yaml -p /your/predictions/folder/ -s test
 (-s = split)
 ```
 
 ### Visualize:
 ```
 cd utils
-python3 snow_visualize.py -d root/snowyKITTI/dataset/ -dc root/networks/train/tasks/semantic/config/labels/snowy-kitti.yaml -p /your/predictions/folder/ -s 11
+python3 snow_visualize.py -d root/toy_snowyKITTI/dataset/ -dc root/networks/train/tasks/semantic/config/labels/snowy-kitti.yaml -p /your/predictions/folder/ -s 22
 (-s = sequence)
 ```
 
