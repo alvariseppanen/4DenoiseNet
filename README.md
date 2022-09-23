@@ -12,10 +12,10 @@ cd networks
 ./train.sh -d root/snowyKITTI/dataset/ -a fourdenoisenet.yml -l /your/log/folder/ -c 0
 ```
 
-### Infer (pretrained model -m root/logs/2022-9-01-10:40/):
+### Infer (pretrained model -m root/logs/2022-9-22-20:56/):
 ```
 cd networks/train/tasks/semantic
-python3 infer.py -d root/toy_snowyKITTI/dataset/ -m root/logs/2022-9-01-10:40/ -l /your/predictions/folder/ -s test
+python3 infer.py -d root/toy_snowyKITTI/dataset/ -m root/logs/2022-9-22-20:56/ -l /your/predictions/folder/ -s test
 (-s = split)
 ```
 
