@@ -7,9 +7,6 @@ import __init__ as booger
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
-
-
 from torch.nn.parameter import Parameter
 from torch.nn import init
 import math
@@ -25,11 +22,12 @@ class KNNConvBlock(nn.Module):
         self.pre_search = 7
         self.range_weight = Parameter(torch.Tensor(in_chans, stem_size, *(kernel_knn_size, kernel_knn_size) ))
         init.kaiming_uniform_(self.range_weight, a = math.sqrt(5))
-        self.pre_range_weight = Parameter(torch.Tensor(in_chans, stem_size, *(kernel_knn_size, kernel_knn_size) ))
+        self.pre_range_weight = Parameter(torch.Tensor(in_chans-1, stem_size, *(kernel_knn_size, kernel_knn_size) ))
         init.kaiming_uniform_(self.pre_range_weight, a = math.sqrt(5))
         self.out_channels = stem_size
         self.knn_nr = kernel_knn_size ** 2
         self.act1 = nn.ReLU(inplace=True)
+        #self.act1 = nn.LeakyReLU(inplace=True)
 
     def KNN_conv(self, inputs, pre_inputs):
         B, H, W = inputs.shape[0], inputs.shape[-2], inputs.shape[-1]
@@ -64,22 +62,19 @@ class KNNConvBlock(nn.Module):
         new_knn_idx = torch.cat((knn_idx,
                             knn_idx + search_dim,
                             knn_idx + 2 * search_dim,
-                            knn_idx + 3 * search_dim,
-                            knn_idx + 4 * search_dim), 1)
+                            knn_idx + 3 * search_dim), 1)
 
         pre_new_knn_idx = torch.cat((pre_knn_idx,
                             pre_knn_idx + pre_search_dim,
-                            pre_knn_idx + 2 * pre_search_dim,
-                            pre_knn_idx + 3 * pre_search_dim,
-                            pre_knn_idx + 4 * pre_search_dim), 1)
+                            pre_knn_idx + 2 * pre_search_dim), 1)
         
         unfold_inputs = torch.gather(input=unfold_inputs, dim=1, index=new_knn_idx)
         unfold_pre_inputs = torch.gather(input=unfold_pre_inputs, dim=1, index=pre_new_knn_idx)
 
         anchors = torch.flatten(inputs, start_dim=2)[:, 1:4, None, :]
-        x_points = unfold_pre_inputs[:, None, 1*self.knn_nr:2*self.knn_nr, :]
-        y_points = unfold_pre_inputs[:, None, 2*self.knn_nr:3*self.knn_nr, :]
-        z_points = unfold_pre_inputs[:, None, 3*self.knn_nr:4*self.knn_nr, :]
+        x_points = unfold_pre_inputs[:, None, 0*self.knn_nr:1*self.knn_nr, :]
+        y_points = unfold_pre_inputs[:, None, 1*self.knn_nr:2*self.knn_nr, :]
+        z_points = unfold_pre_inputs[:, None, 2*self.knn_nr:3*self.knn_nr, :]
         xyz_points = torch.cat((x_points, y_points, z_points), 1)
         d = xyz_points - anchors
 
@@ -93,8 +88,8 @@ class KNNConvBlock(nn.Module):
         d[:, 2, :, :] = torch.arctan2(y_points**2, x_points**2)
 
         d = torch.flatten(d, start_dim=1, end_dim=2)
-        unfold_pre_inputs = torch.cat((unfold_pre_inputs[:, :self.knn_nr, :], d, unfold_pre_inputs[:, -self.knn_nr:, :]), 1)
-        
+        unfold_pre_inputs = d
+
         output = torch.matmul(self.range_weight.view(self.out_channels, -1), unfold_inputs).view(B, self.out_channels, H, W)
         pre_output = torch.matmul(self.pre_range_weight.view(self.out_channels, -1), unfold_pre_inputs).view(B, self.out_channels, H, W)
 
@@ -267,10 +262,8 @@ class NN(nn.Module):
     def __init__(self, nclasses, params):
         super(NN, self).__init__()
         self.nclasses = nclasses
-
-        self.input_size = 5
         
-        self.KNNBlock = KNNConvBlock(self.input_size, 32)
+        self.KNNBlock = KNNConvBlock(self.input_size-1, 32)
         self.resBlock1 = ResBlock(32, 2 * 32, 0.2, pooling=True, drop_out=False)
         self.resBlock_pre = ResBlock(32, 2 * 32, 0.2, pooling=True, drop_out=False)
         self.resBlock7 = ResBlock(2 * 32, 2 * 2 * 32, 0.2, pooling=False)
@@ -280,6 +273,9 @@ class NN(nn.Module):
         self.logits = nn.Conv2d(32, nclasses, kernel_size=(1, 1))
 
     def forward(self, x, pre_x):
+        x = (x[:, 0:4, ...].clone())
+        pre_x = (pre_x[:, 1:4, ...].clone())
+         
         KNNBlock, pre_KNNBlock = self.KNNBlock(x, pre_x)
 
         down, down_skip = self.resBlock1(KNNBlock)
@@ -290,5 +286,5 @@ class NN(nn.Module):
 
         logits = self.logits(up)
         logits = F.softmax(logits, dim=1)
+        
         return logits
-

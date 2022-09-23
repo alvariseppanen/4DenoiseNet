@@ -73,42 +73,40 @@ class User():
 
   def infer(self):
     cnn = []
-    knn = []
+    
     if self.split == None:
 
         self.infer_subset(loader=self.parser.get_train_set(),
-                          to_orig_fn=self.parser.to_original, cnn=cnn, knn=knn)
+                          to_orig_fn=self.parser.to_original, cnn=cnn)
 
         # do valid set
         self.infer_subset(loader=self.parser.get_valid_set(),
-                          to_orig_fn=self.parser.to_original, cnn=cnn, knn=knn)
+                          to_orig_fn=self.parser.to_original, cnn=cnn)
         # do test set
         self.infer_subset(loader=self.parser.get_test_set(),
-                          to_orig_fn=self.parser.to_original, cnn=cnn, knn=knn)
+                          to_orig_fn=self.parser.to_original, cnn=cnn)
 
 
     elif self.split == 'valid':
         self.infer_subset(loader=self.parser.get_valid_set(),
-                        to_orig_fn=self.parser.to_original, cnn=cnn, knn=knn)
+                        to_orig_fn=self.parser.to_original, cnn=cnn)
     elif self.split == 'train':
         self.infer_subset(loader=self.parser.get_train_set(),
-                        to_orig_fn=self.parser.to_original, cnn=cnn, knn=knn)
+                        to_orig_fn=self.parser.to_original, cnn=cnn)
     else:
         self.infer_subset(loader=self.parser.get_test_set(),
-                        to_orig_fn=self.parser.to_original, cnn=cnn, knn=knn)
+                        to_orig_fn=self.parser.to_original, cnn=cnn)
     print("Mean CNN inference time:{}\t std:{}".format(np.mean(cnn), np.std(cnn)))
-    print("Mean KNN inference time:{}\t std:{}".format(np.mean(knn), np.std(knn)))
     print("Total Frames:{}".format(len(cnn)))
     print("Finished Infering")
 
     return
 
-  def infer_subset(self, loader, to_orig_fn,cnn,knn):
+  def infer_subset(self, loader, to_orig_fn, cnn):
     # switch to evaluate mode
 
     self.model.eval()
-    total_time=0
-    total_frames=0
+    
     # empty the cache to infer in high res
     if self.gpu:
       torch.cuda.empty_cache()
@@ -116,10 +114,11 @@ class User():
     with torch.no_grad():
       end = time.time()
 
-      for i, (proj_in, pre_proj_in, proj_mask, _, _, path_seq, path_name, p_x, p_y, proj_range, unproj_range, _, _, _, _, npoints) in enumerate(loader):
+      for i, (proj_in, pre_proj_in, proj_mask, _, _, path_seq, path_name, p_x, p_y, proj_range, unproj_range, _, unproj_xyz, _, _, npoints) in enumerate(loader):
         # first cut to rela size (batch size one allows it)
         p_x = p_x[0, :npoints]
         p_y = p_y[0, :npoints]
+        unproj_xyz = unproj_xyz[0, :npoints, :]
         proj_range = proj_range[0, :npoints]
         unproj_range = unproj_range[0, :npoints]
         path_seq = path_seq[0]
@@ -145,6 +144,9 @@ class User():
             
         # put in original pointcloud using indexes
         unproj_argmax = proj_argmax[p_y, p_x]
+
+        # hack to prevent unvalid points to be classified wrongly
+        unproj_argmax[torch.all(unproj_xyz == -1.0, axis=1)] = 1
 
         # save scan
         # get the first scan in batch and project scan
