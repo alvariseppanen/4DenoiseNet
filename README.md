@@ -29,7 +29,7 @@ python3 snow_evaluate_iou.py -d root/toy_snowyKITTI/dataset/ -dc root/networks/t
 ### Visualize:
 ```
 cd utils
-python3 snow_visualize.py -d root/toy_snowyKITTI/dataset/ -dc root/networks/train/tasks/semantic/config/labels/snowy-kitti.yaml -p /your/predictions/folder/ -s 22
+python3 snow_visualize.py -d root/toy_snowyKITTI/dataset/ -c root/networks/train/tasks/semantic/config/labels/snowy-kitti.yaml -p /your/predictions/folder/ -s 22
 (-s = sequence)
 ```
 
