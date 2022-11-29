@@ -2,6 +2,9 @@
 
 ![](https://github.com/alvariseppanen/4DenoiseNet/blob/main/demo.gif)
 
+### Citation:
+Coming soon, accepted by IEEE Robotics and Autoḿation Letters
+
 ### SnowyKITTI-dataset:
 
 [Download](https://www.dropbox.com/s/o3r654cdzfl405d/snowyKITTI.zip?dl=0)
@@ -32,8 +35,4 @@ cd utils
 python3 snow_visualize.py -d root/toy_snowyKITTI/dataset/ -c root/networks/train/tasks/semantic/config/labels/snowy-kitti.yaml -p /your/predictions/folder/ -s 22
 (-s = sequence)
 ```
-
-### Citation:
-Coming soon, accepted by IEEE Robotics and Autoḿation Letters
-
 Thanks to [SalsaNext](https://github.com/TiagoCortinhal/SalsaNext) for providing some of the code! 
