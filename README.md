@@ -4,7 +4,7 @@
 
 
 ### Citation:
-Coming soon, accepted by IEEE Robotics and Autoḿation Letters
+Coming soon, accepted by IEEE Robotics and Automation Letters
 
 
 ### SnowyKITTI-dataset:
