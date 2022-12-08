@@ -4,7 +4,16 @@
 
 
 ### Citation:
-Coming soon, accepted by IEEE Robotics and Automation Letters
+
+@ARTICLE{9976208,
+  author={Seppanen, Alvari and Ojala, Risto and Tammi, Kari},
+  journal={IEEE Robotics and Automation Letters}, 
+  title={4DenoiseNet: Adverse Weather Denoising from Adjacent Point Clouds}, 
+  year={2022},
+  volume={},
+  number={},
+  pages={1-8},
+  doi={10.1109/LRA.2022.3227863}}
 
 
 ### SnowyKITTI-dataset:
