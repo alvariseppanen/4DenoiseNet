@@ -263,7 +263,7 @@ class NN(nn.Module):
         super(NN, self).__init__()
         self.nclasses = nclasses
         
-        self.KNNBlock = KNNConvBlock(self.input_size-1, 32)
+        self.KNNBlock = KNNConvBlock(4, 32)
         self.resBlock1 = ResBlock(32, 2 * 32, 0.2, pooling=True, drop_out=False)
         self.resBlock_pre = ResBlock(32, 2 * 32, 0.2, pooling=True, drop_out=False)
         self.resBlock7 = ResBlock(2 * 32, 2 * 2 * 32, 0.2, pooling=False)

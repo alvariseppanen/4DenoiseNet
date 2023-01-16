@@ -9,7 +9,7 @@ from vispy.scene import visuals, SceneCanvas
 from vispy.visuals import markers
 import numpy as np
 from matplotlib import pyplot as plt
-from auxiliary.laserscan import LaserScan, SemLaserScan
+from laserscan import LaserScan, SemLaserScan
 import imageio  # for animation
 
 
