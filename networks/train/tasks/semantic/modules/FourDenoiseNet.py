@@ -14,17 +14,16 @@ import time
 
 class KNNConvBlock(nn.Module):
 
-    def __init__(self, in_chans=3, stem_size=32, drop_rate=0.0):
+    def __init__(self, in_chans=3, out_size=32):
         super(KNNConvBlock, self).__init__()
-        self.drop_rate = drop_rate
         kernel_knn_size = 3
         self.search = 5
         self.pre_search = 7
-        self.range_weight = Parameter(torch.Tensor(in_chans, stem_size, *(kernel_knn_size, kernel_knn_size) ))
+        self.range_weight = Parameter(torch.Tensor(in_chans, out_size, * (kernel_knn_size, kernel_knn_size) ))
         init.kaiming_uniform_(self.range_weight, a = math.sqrt(5))
-        self.pre_range_weight = Parameter(torch.Tensor(in_chans-1, stem_size, *(kernel_knn_size, kernel_knn_size) ))
+        self.pre_range_weight = Parameter(torch.Tensor(in_chans-1, out_size, * (kernel_knn_size, kernel_knn_size) ))
         init.kaiming_uniform_(self.pre_range_weight, a = math.sqrt(5))
-        self.out_channels = stem_size
+        self.out_shape = out_size
         self.knn_nr = kernel_knn_size ** 2
         self.act1 = nn.ReLU(inplace=True)
         #self.act1 = nn.LeakyReLU(inplace=True)
@@ -90,8 +89,8 @@ class KNNConvBlock(nn.Module):
         d = torch.flatten(d, start_dim=1, end_dim=2)
         unfold_pre_inputs = d
 
-        output = torch.matmul(self.range_weight.view(self.out_channels, -1), unfold_inputs).view(B, self.out_channels, H, W)
-        pre_output = torch.matmul(self.pre_range_weight.view(self.out_channels, -1), unfold_pre_inputs).view(B, self.out_channels, H, W)
+        output = torch.matmul(self.range_weight.view(self.out_shape, -1), unfold_inputs).view(B, self.out_shape, H, W)
+        pre_output = torch.matmul(self.pre_range_weight.view(self.out_shape, -1), unfold_pre_inputs).view(B, self.out_shape, H, W)
 
         return output, pre_output
 

@@ -1,10 +1,25 @@
-## 4DenoiseNet: Adverse Weather Denoising from Adjacent Point Clouds, [arXiv](https://arxiv.org/abs/2209.07121)
+## 4DenoiseNet: Adverse Weather Denoising from Adjacent Point Clouds, [Publication](https://ieeexplore.ieee.org/document/9976208)
 
 ![](https://github.com/alvariseppanen/4DenoiseNet/blob/main/demo.gif)
 
-### Download SnowyKITTI-dataset:
 
-coming soon
+### Citation:
+
+@ARTICLE{9976208,
+  author={Seppanen, Alvari and Ojala, Risto and Tammi, Kari},
+  journal={IEEE Robotics and Automation Letters}, 
+  title={4DenoiseNet: Adverse Weather Denoising from Adjacent Point Clouds}, 
+  year={2022},
+  volume={},
+  number={},
+  pages={1-8},
+  doi={10.1109/LRA.2022.3227863}}
+
+
+### SnowyKITTI-dataset:
+
+[Download](https://www.dropbox.com/s/o3r654cdzfl405d/snowyKITTI.zip?dl=0)
+
 
 ### Train:
 ```
@@ -29,7 +44,7 @@ python3 snow_evaluate_iou.py -d root/toy_snowyKITTI/dataset/ -dc root/networks/t
 ### Visualize:
 ```
 cd utils
-python3 snow_visualize.py -d root/toy_snowyKITTI/dataset/ -dc root/networks/train/tasks/semantic/config/labels/snowy-kitti.yaml -p /your/predictions/folder/ -s 22
+python3 snow_visualize.py -d root/toy_snowyKITTI/dataset/ -c root/networks/train/tasks/semantic/config/labels/snowy-kitti.yaml -p /your/predictions/folder/ -s 22
 (-s = sequence)
 ```
 
