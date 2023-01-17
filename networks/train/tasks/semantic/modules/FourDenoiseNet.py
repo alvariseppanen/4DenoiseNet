@@ -37,6 +37,7 @@ class KNNConvBlock(nn.Module):
 
         proj_range = (inputs[:, 0:1, ...].clone())
         pre_proj_range = (pre_inputs[:, 0:1, ...].clone())
+        pre_inputs = (pre_inputs[:, 1:4, ...].clone())
         
         unfold_proj_range = F.unfold(proj_range,
                             kernel_size=(self.search, self.search),
@@ -273,7 +274,7 @@ class NN(nn.Module):
 
     def forward(self, x, pre_x):
         x = (x[:, 0:4, ...].clone())
-        pre_x = (pre_x[:, 1:4, ...].clone())
+        pre_x = (pre_x[:, 0:4, ...].clone())
          
         KNNBlock, pre_KNNBlock = self.KNNBlock(x, pre_x)
 
